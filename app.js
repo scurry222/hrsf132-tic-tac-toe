@@ -1,9 +1,11 @@
 (function() {
     const $board = document.querySelector('.board');
+    const $areas = document.querySelectorAll('.area');
     let moves = {
         1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: ''
     };
-    let player = true;
+    let previousWinner = null;
+    let player = previousWinner !== null ? previousWinner : true;
 
     const $winScreen = document.createElement('div')
     $winScreen.classList.add('win-screen');
@@ -11,15 +13,7 @@
     const $resetButton = document.createElement('button');
     $resetButton.innerText = 'Play Again?';
 
-    $resetButton.addEventListener('click', () => {
-        moves = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '' };
-
-        $areas.forEach(($area) => {
-            $area.innerText = '';
-        })
-        $winScreen.remove();
-        $resetButton.remove();
-    })
+    const $previousWinner = document.createElement('div');
 
     const win = function(token) {
         return (
@@ -38,19 +32,32 @@
         return !Object.values(moves).includes('');
     }
 
-    const renderReset = function(message) {
+    const renderReset = function(winner, message) {
         $winScreen.innerText = message;
         document.body.appendChild($winScreen);
         $winScreen.appendChild($resetButton);
+        previousWinner = winner;
     }
+    
+    $resetButton.addEventListener('click', () => {
+        moves = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '' };
+        
+        $areas.forEach(($area) => {
+            $area.innerText = '';
+        })
+        $winScreen.remove();
+        $resetButton.remove();
+        $previousWinner.innerText = `Previous Winner: ${player ? 'X' : 'O'}`;
+        document.body.appendChild($previousWinner);
+    })
 
     $board.addEventListener('click', (e) => {
         if (!moves[e.target.id]) {
             const token = player ? 'X' : 'O';
             moves[e.target.id] = token;
             e.target.innerText = token;
-            win(token) ? renderReset(`Player ${token} wins!`) :
-            stalemate() ? renderReset('Stalemate!'): null;
+            win(token) ? renderReset(token, `Player ${token} wins!`) :
+            stalemate() ? renderReset(token, 'Stalemate!') :
             player = !player;
         }
     })
