@@ -1,5 +1,5 @@
 (function() {
-    const $areas = document.querySelectorAll('.area');
+    const $board = document.querySelector('.board');
     let moves = {
         1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: ''
     };
@@ -44,16 +44,14 @@
         $winScreen.appendChild($resetButton);
     }
 
-    $areas.forEach(($area) => {
-        $area.addEventListener('click', () => {
-            if (!moves[$area.id]) {
-                const token = player ? 'X' : 'O';
-                moves[$area.id] = token;
-                $area.innerText = token;
-                win(token) ? renderReset(`Player ${token} wins!`) :
-                stalemate() ? renderReset('Stalemate!'): null;
-                player = !player;
-            }
-        });
-    });
+    $board.addEventListener('click', (e) => {
+        if (!moves[e.target.id]) {
+            const token = player ? 'X' : 'O';
+            moves[e.target.id] = token;
+            e.target.innerText = token;
+            win(token) ? renderReset(`Player ${token} wins!`) :
+            stalemate() ? renderReset('Stalemate!'): null;
+            player = !player;
+        }
+    })
 })()
