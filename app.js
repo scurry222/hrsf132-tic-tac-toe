@@ -1,4 +1,8 @@
 (function() {
+
+    // FUNCTION INITIALIZATIONS
+    //______________________________
+
     const initializeBoard = function() {
         const $newBoard = document.createElement('div');
         $newBoard.classList.add('board');
@@ -18,7 +22,36 @@
         }
     }
 
+    const win = function(token) {
+        return (
+            (moves[1] === token && moves[5] === token && moves[9] === token) ||
+            (moves[3] === token && moves[5] === token && moves[7] === token) ||
+            (moves[1] === token && moves[2] === token && moves[3] === token) ||
+            (moves[4] === token && moves[5] === token && moves[6] === token) ||
+            (moves[7] === token && moves[8] === token && moves[9] === token) ||
+            (moves[1] === token && moves[4] === token && moves[7] === token) ||
+            (moves[2] === token && moves[5] === token && moves[8] === token) ||
+            (moves[3] === token && moves[6] === token && moves[9] === token))
+        ? true: false;
+    }
+ 
+    const stalemate = function() {
+        return !Object.values(moves).includes('');
+    }
+
+    const renderReset = function(winner, message) {
+        $winScreen.innerText = message;
+        document.body.appendChild($winScreen);
+        $winScreen.appendChild($resetButton);
+        previousWinner = winner;
+    }
+
     initializeBoard();
+
+
+    // DOM AND OTHER OBJECTS
+    //______________________________
+
     const $board = document.querySelector('.board');
     const $areas = document.querySelectorAll('.area');
     let moves = {
@@ -35,29 +68,9 @@
 
     const $previousWinner = document.createElement('div');
 
-    const win = function(token) {
-        return (
-            (moves[1] === token && moves[5] === token && moves[9] === token) ||
-            (moves[3] === token && moves[5] === token && moves[7] === token) ||
-            (moves[1] === token && moves[2] === token && moves[3] === token) ||
-            (moves[4] === token && moves[5] === token && moves[6] === token) ||
-            (moves[7] === token && moves[8] === token && moves[9] === token) ||
-            (moves[1] === token && moves[4] === token && moves[7] === token) ||
-            (moves[2] === token && moves[5] === token && moves[8] === token) ||
-            (moves[3] === token && moves[6] === token && moves[9] === token))
-        ? true: false;
-    }
 
-    const stalemate = function() {
-        return !Object.values(moves).includes('');
-    }
-
-    const renderReset = function(winner, message) {
-        $winScreen.innerText = message;
-        document.body.appendChild($winScreen);
-        $winScreen.appendChild($resetButton);
-        previousWinner = winner;
-    }
+    // EVENT LISTENERS
+    //______________________________
 
     $resetButton.addEventListener('click', () => {
         moves = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '' };
