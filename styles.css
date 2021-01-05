@@ -22,6 +22,10 @@ form input {
     width: 200px;
 }
 
+h1 {
+    font-size: 100px;
+}
+
 .board {
     order: 2;
     flex: 1 1;
