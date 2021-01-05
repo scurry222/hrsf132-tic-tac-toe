@@ -78,11 +78,13 @@
         document.body.appendChild($winScreen);
         $winScreen.appendChild($resetButton);
         previousWinner = winner;
-        renderPlayerNameForm();
+        if (!document.querySelector('.player-form')) {
+            renderPlayerNameForm();
+        }
     }
 
 
-    // 
+    // Display names of current players
     const renderPlayerNames = function(p1, p2) {
         playerOne = p1;
         playerTwo = p2;
@@ -90,6 +92,7 @@
         document.body.appendChild($playerNames);
     }
 
+    // Increment counter for winning player
     const keepPlayerWinTally = function(winner) {
 
     }
@@ -139,6 +142,12 @@
     $playerInputError.innerText = 'Tic-Tac-Toe needs two players to play!';
     $playerInputError.classList.add('player-input-error');
 
+    const $currentPlayer = document.createElement('div');
+    $currentPlayer.innerText = `Player One's turn`;
+    $currentPlayer.classList.add('current-player');
+    document.body.appendChild($currentPlayer);
+ 
+
     // EVENT LISTENERS
     //______________________________
 
@@ -152,18 +161,29 @@
             $previousWinner.innerText = `Previous Winner: ${ !playerOne && !playerTwo ? player ? 'X' : 'O' : player ? playerOne : playerTwo }`;
             document.body.appendChild($previousWinner);
         }
-        document.querySelector('.player-form').remove();
+        if (!document.querySelector('.player-form'))
+            document.querySelector('.player-form').remove();
     });
 
     // Handle click events on board
     $board.addEventListener('click', (e) => {
         if (!moves[e.target.id]) {
+
             const token = player ? 'X' : 'O';
+            const playerPlaceholder = player ? 'Player One' : 'Player Two';
+            const opponentPlaceholder = !player ? 'Player One' : 'Player Two';
+    
             moves[e.target.id] = token;
             e.target.innerText = token;
-            win(token) ? renderReset(token, `Player ${ !playerOne && !playerTwo ? token : player ? playerOne : playerTwo } wins!`) :
+
+            const playerName = !playerOne && !playerTwo ? playerPlaceholder : player ? playerOne : playerTwo;
+
+            win(token) ? renderReset(token, `Player ${ playerName } wins!`) :
             stalemate() ? renderReset(null, 'Stalemate!') :
             player = !player;
+
+            const opponent = !playerOne && !playerTwo ? opponentPlaceholder : player ? playerOne : playerTwo;
+            $currentPlayer.innerText = `${opponent}'s turn`;
         }
     });
 
