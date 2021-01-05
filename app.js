@@ -87,7 +87,7 @@
         } else {
             playerOne = p1;
             playerTwo = p2;
-            $playerNames.innerText = `${p1} vs. ${p2}`;
+            $playerNames.innerText = `(X) ${p1} vs. ${p2} (O)`;
         }
         document.body.appendChild($playerNames);
     }
