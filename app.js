@@ -94,7 +94,10 @@
 
     // Increment counter for winning player
     const keepPlayerWinTally = function(winner) {
-
+        if (winner) {
+            playerOne ? playerOneWins += 1 : playerTwoWins += 1;
+        }
+        $score.innerText = `${playerOne} wins: ${playerOneWins} | ${playerTwo} wins: ${playerTwoWins}`;
     }
 
     // Invoke rendering functions
@@ -119,8 +122,10 @@
     let player = previousWinner !== null ? previousWinner : true;
 
     // Keep custom player names
-    let playerOne;
-    let playerTwo;
+    let playerOne = 'Player One';
+    let playerTwo = 'Player Two';
+    let playerOneWins = 0;
+    let playerTwoWins = 0;
 
     // Create win screen DOM object
     const $winScreen = document.createElement('div')
@@ -147,6 +152,10 @@
     $currentPlayer.classList.add('current-player');
     document.body.appendChild($currentPlayer);
  
+    const $score = document.createElement('div');
+    $score.classList.add('score');
+    $score.innerText = 'Player One wins: 0 | Player Two wins: 0';
+    document.body.appendChild($score);
 
     // EVENT LISTENERS
     //______________________________
@@ -178,9 +187,14 @@
 
             const playerName = !playerOne && !playerTwo ? playerPlaceholder : player ? playerOne : playerTwo;
 
-            win(token) ? renderReset(token, `Player ${ playerName } wins!`) :
-            stalemate() ? renderReset(null, 'Stalemate!') :
-            player = !player;
+            if (win(token)) {
+                renderReset(token, `Player ${ playerName } wins!`);
+                keepPlayerWinTally(playerName);
+            } else if (stalemate()) {
+                renderReset(null, 'Stalemate!');
+            } else {
+                player = !player;
+            }
 
             const opponent = !playerOne && !playerTwo ? opponentPlaceholder : player ? playerOne : playerTwo;
             $currentPlayer.innerText = `${opponent}'s turn`;
@@ -201,6 +215,7 @@
             document.querySelector('.player-input-error') ?
             document.querySelector('.player-input-error').remove() :
             null;
+            keepPlayerWinTally();
         }
     })
 })()
