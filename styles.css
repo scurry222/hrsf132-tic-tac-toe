@@ -27,7 +27,6 @@ form input {
     flex: 1 1;
     align-self: center;
     flex-basis: auto;
-    /* margin-left: 40%; */
 }
 
 .row {
@@ -35,11 +34,7 @@ form input {
     width: 300px;
     height: 100px;
  }
-/*
- .row:not(:last-child) {
-    border-bottom: 8px solid black;
 
-} */
 .area {
     display: flex;
     align-items: center;
@@ -49,8 +44,18 @@ form input {
     border: 5px solid black;
 }
 
+.prev-winner {
+    order: 0;
+    margin: 20px;
+}
+
 .win-screen {
     margin: 20px;
     display: flex;
     font-size: 20px;
+}
+
+.player-names {
+    order: 4;
+    margin: 20px;
 }

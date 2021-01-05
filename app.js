@@ -32,11 +32,16 @@
     // Create and add submit player names form DOM object
     const renderPlayerNameForm = function() {
         const $playerForm = document.createElement('form');
+        $playerForm.classList.add('player-form');
 
         const $playerOneInput = document.createElement('input');
         $playerOneInput.setAttribute('placeholder', 'Player one (X) name here...');
+        $playerOneInput.classList.add('player-one');
+
         const $playerTwoInput = document.createElement('input');
         $playerTwoInput.setAttribute('placeholder', 'Player two (O) name here...');
+        $playerTwoInput.classList.add('player-two');
+
 
         const $submitForm = document.createElement('button');
         $submitForm.innerText = 'Submit';
@@ -73,6 +78,18 @@
         document.body.appendChild($winScreen);
         $winScreen.appendChild($resetButton);
         previousWinner = winner;
+        renderPlayerNameForm();
+    }
+
+    const displayPlayerNames = function(p1, p2) {
+        if (!p1 && !p2) {
+            $playerNames.innerText = 'Tic-Tac-Toe needs two players to play!';
+        } else {
+            playerOne = p1;
+            playerTwo = p2;
+            $playerNames.innerText = `${p1} vs. ${p2}`;
+        }
+        document.body.appendChild($playerNames);
     }
 
     // Invoke rendering functions
@@ -92,9 +109,13 @@
         1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: ''
     };
 
-    // Keep previous winner 
+    // Keep previous winner
     let previousWinner = null;
     let player = previousWinner !== null ? previousWinner : true;
+
+    // Keep custom player names
+    let playerOne;
+    let playerTwo;
 
     // Create win screen DOM object
     const $winScreen = document.createElement('div')
@@ -108,6 +129,10 @@
     const $previousWinner = document.createElement('div');
     $previousWinner.classList.add('prev-winner');
 
+    // Create player names DOM object
+    const $playerNames = document.createElement('div');
+    $playerNames.classList.add('player-names');
+
     // EVENT LISTENERS
     //______________________________
 
@@ -118,9 +143,10 @@
         $winScreen.remove();
         $resetButton.remove();
         if (previousWinner) {
-            $previousWinner.innerText = `Previous Winner: ${ player ? 'X' : 'O' }`;
+            $previousWinner.innerText = `Previous Winner: ${ !playerOne && !playerTwo ? player ? 'X' : 'O' : player ? playerOne : playerTwo }`;
             document.body.appendChild($previousWinner);
         }
+        document.querySelector('.player-form').remove();
     });
 
     // Handle click events on board
@@ -129,9 +155,19 @@
             const token = player ? 'X' : 'O';
             moves[e.target.id] = token;
             e.target.innerText = token;
-            win(token) ? renderReset(token, `Player ${ token } wins!`) :
+            win(token) ? renderReset(token, `Player ${ !playerOne && !playerTwo ? token : player ? playerOne : playerTwo } wins!`) :
             stalemate() ? renderReset(null, 'Stalemate!') :
             player = !player;
         }
     });
+
+    // Handle player name submission
+    document.querySelector('.player-form button')
+    .addEventListener('click', (e) => {
+        e.preventDefault();
+        const $playerOne = document.querySelector('.player-one');    
+        const $playerTwo = document.querySelector('.player-two');
+        displayPlayerNames($playerOne.value, $playerTwo.value);
+        document.querySelector('.player-form').remove();
+    })
 })()
