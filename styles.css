@@ -59,3 +59,8 @@ form input {
     order: 4;
     margin: 20px;
 }
+
+.player-input-error {
+    order: 5;
+    margin: 20px;
+}

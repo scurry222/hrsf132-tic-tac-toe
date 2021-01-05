@@ -81,15 +81,17 @@
         renderPlayerNameForm();
     }
 
-    const displayPlayerNames = function(p1, p2) {
-        if (!p1 && !p2) {
-            $playerNames.innerText = 'Tic-Tac-Toe needs two players to play!';
-        } else {
-            playerOne = p1;
-            playerTwo = p2;
-            $playerNames.innerText = `(X) ${p1} vs. ${p2} (O)`;
-        }
+
+    // 
+    const renderPlayerNames = function(p1, p2) {
+        playerOne = p1;
+        playerTwo = p2;
+        $playerNames.innerText = `(X) ${p1} vs. ${p2} (O)`;
         document.body.appendChild($playerNames);
+    }
+
+    const keepPlayerWinTally = function(winner) {
+
     }
 
     // Invoke rendering functions
@@ -133,6 +135,10 @@
     const $playerNames = document.createElement('div');
     $playerNames.classList.add('player-names');
 
+    const $playerInputError = document.createElement('div');
+    $playerInputError.innerText = 'Tic-Tac-Toe needs two players to play!';
+    $playerInputError.classList.add('player-input-error');
+
     // EVENT LISTENERS
     //______________________________
 
@@ -167,7 +173,14 @@
         e.preventDefault();
         const $playerOne = document.querySelector('.player-one');    
         const $playerTwo = document.querySelector('.player-two');
-        displayPlayerNames($playerOne.value, $playerTwo.value);
-        document.querySelector('.player-form').remove();
+        if (!$playerOne.value || !$playerTwo.value) {
+            document.body.append($playerInputError);
+        } else {
+            renderPlayerNames($playerOne.value, $playerTwo.value);
+            document.querySelector('.player-form').remove();
+            document.querySelector('.player-input-error') ?
+            document.querySelector('.player-input-error').remove() :
+            null;
+        }
     })
 })()
