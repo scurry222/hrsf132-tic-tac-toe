@@ -4,16 +4,22 @@
     //______________________________
 
     // Initialize DOM board
-    const initializeBoard = function() {
+    const renderBoard = function() {
         const $newBoard = document.createElement('div');
         $newBoard.classList.add('board');
+
+        // Add before script tag in DOM
         document.body.prepend($newBoard);
+
         for (let i = 0; i <= 2; i++) {
             let $row = document.createElement('div');
             $row.classList.add('row')
             $row.setAttribute('id', (i + 1).toString());
             $newBoard.appendChild($row);
+
+            // Needed for unique IDs on placement areas
             let offset = i * 3;
+
             for (let j = 0; j <= 2; j++) {
                 let $area = document.createElement('div');
                 $area.classList.add('area');
@@ -21,6 +27,25 @@
                 $row.appendChild($area);
             }
         }
+    }
+
+    // Create and add submit player names form DOM object
+    const renderPlayerNameForm = function() {
+        const $playerForm = document.createElement('form');
+
+        const $playerOneInput = document.createElement('input');
+        $playerOneInput.setAttribute('placeholder', 'Player one (X) name here...');
+        const $playerTwoInput = document.createElement('input');
+        $playerTwoInput.setAttribute('placeholder', 'Player two (O) name here...');
+
+        const $submitForm = document.createElement('button');
+        $submitForm.innerText = 'Submit';
+
+        $playerForm.appendChild($playerOneInput);
+        $playerForm.appendChild($playerTwoInput);
+        $playerForm.appendChild($submitForm);
+
+        document.body.appendChild($playerForm);
     }
 
     // Ez win function (replace if time)
@@ -37,7 +62,7 @@
         ? true: false;
     }
  
-    // Handle stalemate (Look ahead if eventual stalemate if evident if time)
+    // Handle stalemate (Look ahead if eventual stalemate is evident if time)
     const stalemate = function() {
         return !Object.values(moves).includes('');
     }
@@ -50,8 +75,9 @@
         previousWinner = winner;
     }
 
-    // Add board to DOM
-    initializeBoard();
+    // Invoke rendering functions
+    renderBoard();
+    renderPlayerNameForm();
 
 
     // DOM AND OTHER OBJECTS
@@ -80,13 +106,7 @@
 
     // Create previous winner DOM object
     const $previousWinner = document.createElement('div');
-
-    // Submit player names
-    const $playerForm = document.createElement('form');
-    const $playerOneInput = document.createElement('input');
-    const $playerTwoInput = document.createElement('input');
-    const $submitForm = document.createElement('button');
-
+    $previousWinner.classList.add('prev-winner');
 
     // EVENT LISTENERS
     //______________________________

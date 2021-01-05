@@ -4,12 +4,30 @@ html {
 
 body {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
+    flex-direction: column;
+}
+
+form {
+    order: 1;
+    margin: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    width: 500px;
+}
+
+
+form input {
+    width: 200px;
 }
 
 .board {
+    order: 1;
+    flex: 1 1;
+    align-self: center;
+    flex-basis: auto;
+    /* margin-left: 40%; */
 }
 
 .row {
@@ -29,4 +47,10 @@ body {
     font-size: 100px;
     width: 100%;
     border: 5px solid black;
+}
+
+.win-screen {
+    margin: 20px;
+    display: flex;
+    font-size: 20px;
 }
